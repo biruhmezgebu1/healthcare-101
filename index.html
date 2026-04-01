@@ -384,7 +384,7 @@ var slides=[
 {img:"slide1.png",text:"From Addis Ababa...",pos:"center center",size:"cover",bg:"#0a0a1a"},
 {img:"slide5.png",text:"...to learning the system...",pos:"center center",size:"cover",bg:"#0a0a1a"},
 {img:"slide2.png",text:"...through the training...",pos:"center center",size:"cover",bg:"#0a0a1a"},
-{img:"slide3.png",text:"...to building real expertise...",pos:"center center",size:"contain",bg:"#e8ddd0"},
+{img:"slide3.png",text:"...to building real expertise...",pos:"top center",size:"cover",bg:"#0a0a1a"},
 {img:"slide4.png",text:"...to real careers...",pos:"center center",size:"cover",bg:"#0a0a1a"},
 {img:"slide6.png",text:"...one team, powering US healthcare.",pos:"center center",size:"cover",bg:"#0a0a1a"},
 ];
@@ -431,7 +431,7 @@ var _intro=useState(true),showIntro=_intro[0],sShowIntro=_intro[1];
 if(showIntro)return React.createElement(Intro,{onDone:function(){sShowIntro(false)}});
 
 var allDone=CHAPTERS.every(function(ch){return completed[ch.id]});
-if(allDone&&!refMode)sRef(true);
+React.useEffect(function(){if(allDone&&!refMode)sRef(true)},[allDone]);
 
 var _vi=useState({}),visited=_vi[0],sVi=_vi[1];
 
