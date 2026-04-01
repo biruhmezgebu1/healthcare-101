@@ -427,26 +427,20 @@ var _n=useState(""),name=_n[0],sN=_n[1];
 var _ns=useState(false),ns=_ns[0],sNs=_ns[1];
 var _ref=useState(false),refMode=_ref[0],sRef=_ref[1];
 var _intro=useState(true),showIntro=_intro[0],sShowIntro=_intro[1];
-
-if(showIntro)return React.createElement(Intro,{onDone:function(){sShowIntro(false)}});
-
-var allDone=CHAPTERS.every(function(ch){return completed[ch.id]});
-React.useEffect(function(){if(allDone&&!refMode)sRef(true)},[allDone]);
-
 var _vi=useState({}),visited=_vi[0],sVi=_vi[1];
 
+var allDone=CHAPTERS.every(function(ch){return completed[ch.id]});
+React.useEffect(function(){if(allDone&&!refMode)sRef(true)},[allDone,refMode]);
+
 var handleComplete=function(chId,score,total){sC(O(completed,chId,{s:score,t:total}));sV("home");window.scrollTo(0,0)};
-
-var canAccess=function(chId){
-if(refMode)return true;
-if(chId===1)return true;
-return !!completed[chId-1];
-};
-
+var canAccess=function(chId){if(refMode)return true;if(chId===1)return true;return !!completed[chId-1]};
 var goToChapter=function(chId){sVi(O(visited,chId,true));sV(chId);window.scrollTo(0,0)};
 
 return(
 <div>
+{showIntro&&<Intro onDone={function(){sShowIntro(false)}}/>}
+
+<div style={{display:showIntro?"none":"block"}}>
 {CHAPTERS.map(function(ch){
 if(!visited[ch.id])return null;
 return <div key={ch.id} style={{display:view===ch.id?"block":"none",maxWidth:800,margin:"0 auto",padding:"20px 24px"}}>
@@ -479,7 +473,7 @@ return <div key={ch.id} style={{display:view===ch.id?"block":"none",maxWidth:800
 <button onClick={function(){if(name.trim())sNs(true)}} style={{padding:"10px 24px",borderRadius:6,background:C.bronze,color:C.white,fontSize:14,fontWeight:600,opacity:name.trim()?1:.4}}>Begin</button>
 </div>}
 {ns&&<div style={{marginTop:12,fontSize:14,opacity:.85}}>Welcome, {name}. {Object.keys(completed).length}/13 chapters complete.</div>}
-{refMode&&<div style={{marginTop:12,padding:"8px 16px",background:"rgba(139,115,85,.3)",borderRadius:6,fontSize:13}}>📖 Reference Mode — all chapters unlocked for review.</div>}
+{refMode&&<div style={{marginTop:12,padding:"8px 16px",background:"rgba(139,115,85,.3)",borderRadius:6,fontSize:13}}>Reference Mode — all chapters unlocked for review.</div>}
 </div>
 
 <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:24}}>
@@ -492,7 +486,7 @@ style={{background:done?C.green:accessible?C.white:"#eee",color:done?C.white:acc
 </div>
 
 {CHAPTERS.map(function(ch){
-var done=!!completed[ch.id];var accessible=canAccess(ch.id);var next=!done&&accessible&&!completed[ch.id];
+var done=!!completed[ch.id];var accessible=canAccess(ch.id);var next=!done&&accessible;
 return <div key={ch.id} onClick={function(){if(accessible)goToChapter(ch.id)}}
 style={{background:C.white,border:"1px solid "+(done?C.green:next?C.bronze:C.grayLt),borderLeft:"4px solid "+(done?C.green:next?C.bronze:accessible?C.grayLt:"#eee"),borderRadius:8,padding:"16px 20px",marginBottom:8,cursor:accessible?"pointer":"default",opacity:accessible?1:.5,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
 <div style={{display:"flex",alignItems:"center",gap:12}}>
@@ -523,6 +517,7 @@ var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="heal
 </div>
 )}
 <Foot/>
+</div>
 </div>
 </div>);
 }
