@@ -371,54 +371,6 @@ return <ExerciseBlock key={i} exercise={ex} idx={i} answers={ans} feedback={fb} 
 </div>);
 }
 
-/* ===== INTRO ===== */
-function Intro(p){
-var _s=useState(0),scene=_s[0],sScene=_s[1];
-var _o=useState(false),out=_o[0],sOut=_o[1];
-React.useEffect(function(){
-if(scene<6){var t=setTimeout(function(){sScene(function(s){return s+1})},1400);return function(){clearTimeout(t)}}
-},[scene]);
-var finish=function(){sOut(true);setTimeout(p.onDone,600)};
-
-var slides=[
-{img:"slide1.png",text:"From Addis Ababa...",pos:"center center",size:"cover",bg:"#0a0a1a"},
-{img:"slide5.png",text:"...to learning the system...",pos:"center center",size:"cover",bg:"#0a0a1a"},
-{img:"slide2.png",text:"...through the training...",pos:"center center",size:"cover",bg:"#0a0a1a"},
-{img:"slide3.png",text:"...to building real expertise...",pos:"top center",size:"cover",bg:"#0a0a1a"},
-{img:"slide4.png",text:"...to real careers...",pos:"center center",size:"cover",bg:"#0a0a1a"},
-{img:"slide6.png",text:"...one team, powering US healthcare.",pos:"center center",size:"cover",bg:"#0a0a1a"},
-];
-
-return(
-<div style={{position:"fixed",top:0,left:0,width:"100%",height:"100%",background:"#0a0a1a",zIndex:9999,opacity:out?0:1,transition:"opacity .6s ease"}}>
-{slides.map(function(sl,i){return(
-<div key={i} style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",opacity:scene===i?1:0,transition:"opacity .8s ease",backgroundImage:"url("+sl.img+")",backgroundSize:sl.size,backgroundPosition:sl.pos,backgroundRepeat:"no-repeat",backgroundColor:sl.bg}}/>
-)})}
-<div style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",background:"linear-gradient(to bottom, rgba(10,10,26,.4) 0%, rgba(10,10,26,.7) 100%)"}}>
-<div style={{position:"absolute",bottom:"12%",left:0,width:"100%",textAlign:"center",padding:"0 30px"}}>
-<div key={scene} style={{animation:"fadeUp .6s ease both"}}>
-<div style={{fontFamily:"Georgia,serif",fontSize:scene===5?20:28,color:"#F8F6F1",letterSpacing:scene===5?.5:1,lineHeight:1.4,textShadow:"0 2px 20px rgba(0,0,0,.5)"}}>
-{slides[Math.min(scene,5)].text}
-</div>
-</div>
-{scene>=6&&(
-<button onClick={finish} style={{marginTop:24,padding:"14px 44px",background:"#8B7355",color:"#F8F6F1",border:"none",borderRadius:8,fontSize:16,fontFamily:"Georgia,serif",letterSpacing:1,cursor:"pointer",animation:"fadeUp .6s ease .2s both",opacity:0,boxShadow:"0 4px 20px rgba(139,115,85,.4)"}}>
-Begin Learning
-</button>
-)}
-<div style={{display:"flex",justifyContent:"center",gap:8,marginTop:20}}>
-{[0,1,2,3,4,5].map(function(i){return(
-<div key={i} style={{width:scene===i?28:8,height:6,borderRadius:3,background:scene>=i?"#8B7355":"rgba(248,246,241,.15)",transition:"all .4s ease"}}/>
-)})}
-</div>
-<div style={{marginTop:16,fontFamily:"Georgia,serif",fontSize:12,letterSpacing:4,color:"rgba(248,246,241,.35)"}}>DESTA WORKS</div>
-</div>
-</div>
-<button onClick={finish} style={{position:"absolute",top:24,right:24,background:"transparent",border:"1px solid rgba(248,246,241,.2)",color:"rgba(248,246,241,.5)",padding:"6px 18px",borderRadius:20,fontSize:12,cursor:"pointer",zIndex:1}}>Skip →</button>
-</div>
-);
-}
-
 /* ===== APP ===== */
 function App(){
 var _v=useState("home"),view=_v[0],sV=_v[1];
@@ -426,21 +378,59 @@ var _c=useState({}),completed=_c[0],sC=_c[1];
 var _n=useState(""),name=_n[0],sN=_n[1];
 var _ns=useState(false),ns=_ns[0],sNs=_ns[1];
 var _ref=useState(false),refMode=_ref[0],sRef=_ref[1];
-var _intro=useState(true),showIntro=_intro[0],sShowIntro=_intro[1];
+var _intr=useState(true),intro=_intr[0],sIntr=_intr[1];
 var _vi=useState({}),visited=_vi[0],sVi=_vi[1];
+var _sc=useState(0),scene=_sc[0],sSc=_sc[1];
+var _fad=useState(false),fading=_fad[0],sFad=_fad[1];
 
 var allDone=CHAPTERS.every(function(ch){return completed[ch.id]});
 React.useEffect(function(){if(allDone&&!refMode)sRef(true)},[allDone,refMode]);
 
-var handleComplete=function(chId,score,total){sC(O(completed,chId,{s:score,t:total}));sV("home");window.scrollTo(0,0)};
+React.useEffect(function(){
+if(intro&&scene<6){var t=setTimeout(function(){sSc(scene+1)},1400);return function(){clearTimeout(t)}}
+},[intro,scene]);
+
+var finishIntro=function(){sFad(true);setTimeout(function(){sIntr(false);sFad(false)},700)};
+var handleComplete=function(chId,s,t){sC(O(completed,chId,{s:s,t:t}));sV("home");window.scrollTo(0,0)};
 var canAccess=function(chId){if(refMode)return true;if(chId===1)return true;return !!completed[chId-1]};
-var goToChapter=function(chId){sVi(O(visited,chId,true));sV(chId);window.scrollTo(0,0)};
+var goTo=function(chId){sVi(O(visited,chId,true));sV(chId);window.scrollTo(0,0)};
+
+var slides=[
+{img:"slide1.png",text:"From Addis Ababa...",pos:"center"},
+{img:"slide5.png",text:"...to learning the system...",pos:"center"},
+{img:"slide2.png",text:"...through the training...",pos:"center"},
+{img:"slide3.png",text:"...to building real expertise...",pos:"top center"},
+{img:"slide4.png",text:"...to real careers...",pos:"center"},
+{img:"slide6.png",text:"...one team, powering US healthcare.",pos:"center"},
+];
 
 return(
 <div>
-{showIntro&&<Intro onDone={function(){sShowIntro(false)}}/>}
 
-<div style={{display:showIntro?"none":"block"}}>
+{intro&&(
+<div style={{position:"fixed",top:0,left:0,width:"100%",height:"100%",background:"#0a0a1a",zIndex:9999,opacity:fading?0:1,transition:"opacity .7s ease"}}>
+{slides.map(function(sl,i){return(
+<div key={i} style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",opacity:scene===i?1:0,transition:"opacity .8s ease",backgroundImage:"url("+sl.img+")",backgroundSize:"cover",backgroundPosition:sl.pos,backgroundRepeat:"no-repeat",backgroundColor:"#0a0a1a"}}/>
+)})}
+<div style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",background:"linear-gradient(to bottom, rgba(10,10,26,.4) 0%, rgba(10,10,26,.7) 100%)"}}>
+<div style={{position:"absolute",bottom:"12%",left:0,width:"100%",textAlign:"center",padding:"0 30px"}}>
+<div key={scene} style={{animation:"fadeUp .6s ease both"}}>
+<div style={{fontFamily:"Georgia,serif",fontSize:scene===5?20:28,color:"#F8F6F1",letterSpacing:scene===5?.5:1,lineHeight:1.4,textShadow:"0 2px 20px rgba(0,0,0,.5)"}}>
+{slides[Math.min(scene,5)].text}
+</div></div>
+{scene>=6&&(
+<button onClick={finishIntro} style={{marginTop:24,padding:"14px 44px",background:"#8B7355",color:"#F8F6F1",border:"none",borderRadius:8,fontSize:16,fontFamily:"Georgia,serif",letterSpacing:1,cursor:"pointer",animation:"fadeUp .6s ease .2s both",opacity:0,boxShadow:"0 4px 20px rgba(139,115,85,.4)"}}>Begin Learning</button>
+)}
+<div style={{display:"flex",justifyContent:"center",gap:8,marginTop:20}}>
+{[0,1,2,3,4,5].map(function(i){return <div key={i} style={{width:scene===i?28:8,height:6,borderRadius:3,background:scene>=i?"#8B7355":"rgba(248,246,241,.15)",transition:"all .4s ease"}}/>})}</div>
+<div style={{marginTop:16,fontFamily:"Georgia,serif",fontSize:12,letterSpacing:4,color:"rgba(248,246,241,.35)"}}>DESTA WORKS</div>
+</div></div>
+<button onClick={finishIntro} style={{position:"absolute",top:24,right:24,background:"transparent",border:"1px solid rgba(248,246,241,.2)",color:"rgba(248,246,241,.5)",padding:"6px 18px",borderRadius:20,fontSize:12,cursor:"pointer",zIndex:1}}>Skip →</button>
+</div>
+)}
+
+{!intro&&(
+<div>
 {CHAPTERS.map(function(ch){
 if(!visited[ch.id])return null;
 return <div key={ch.id} style={{display:view===ch.id?"block":"none",maxWidth:800,margin:"0 auto",padding:"20px 24px"}}>
@@ -452,7 +442,6 @@ return <div key={ch.id} style={{display:view===ch.id?"block":"none",maxWidth:800
 
 <div style={{display:view==="home"?"block":"none",maxWidth:800,margin:"0 auto",padding:"20px 24px"}}>
 <Header onHome={function(){sV("home")}}/>
-
 <div style={{background:"linear-gradient(135deg, #1E4A8A 0%, #0f3460 100%)",borderRadius:12,padding:36,marginBottom:32,color:C.white,position:"relative",overflow:"hidden"}}>
 <div style={{position:"absolute",top:0,right:0,width:200,height:200,background:"radial-gradient(circle, rgba(139,115,85,.15) 0%, transparent 70%)",borderRadius:"50%"}}/>
 <div style={{fontSize:12,letterSpacing:2,opacity:.6,marginBottom:8}}>DESTA WORKS — DESTA UNIVERSITY</div>
@@ -479,7 +468,7 @@ return <div key={ch.id} style={{display:view===ch.id?"block":"none",maxWidth:800
 <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:24}}>
 {CHAPTERS.map(function(ch){
 var done=!!completed[ch.id];var accessible=canAccess(ch.id);
-return <div key={ch.id} onClick={function(){if(accessible)goToChapter(ch.id)}} className="ch-dot"
+return <div key={ch.id} onClick={function(){if(accessible)goTo(ch.id)}} className="ch-dot"
 style={{background:done?C.green:accessible?C.white:"#eee",color:done?C.white:accessible?C.charcoal:"#ccc",border:"2px solid "+(done?C.green:accessible?C.bronze:"#ddd"),cursor:accessible?"pointer":"default",opacity:accessible?1:.5}}>
 {ch.id}</div>
 })}
@@ -487,7 +476,7 @@ style={{background:done?C.green:accessible?C.white:"#eee",color:done?C.white:acc
 
 {CHAPTERS.map(function(ch){
 var done=!!completed[ch.id];var accessible=canAccess(ch.id);var next=!done&&accessible;
-return <div key={ch.id} onClick={function(){if(accessible)goToChapter(ch.id)}}
+return <div key={ch.id} onClick={function(){if(accessible)goTo(ch.id)}}
 style={{background:C.white,border:"1px solid "+(done?C.green:next?C.bronze:C.grayLt),borderLeft:"4px solid "+(done?C.green:next?C.bronze:accessible?C.grayLt:"#eee"),borderRadius:8,padding:"16px 20px",marginBottom:8,cursor:accessible?"pointer":"default",opacity:accessible?1:.5,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
 <div style={{display:"flex",alignItems:"center",gap:12}}>
 <div style={{width:28,height:28,borderRadius:"50%",background:done?C.green:next?C.bronze:"#eee",color:done||next?C.white:C.gray,display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:700}}>{done?"✓":ch.id}</div>
@@ -495,19 +484,15 @@ style={{background:C.white,border:"1px solid "+(done?C.green:next?C.bronze:C.gra
 <div style={{fontWeight:600,fontSize:15,color:accessible?C.charcoal:"#aaa"}}>{ch.title}</div>
 {done?<div style={{fontSize:12,color:C.green}}>{completed[ch.id].s}/{completed[ch.id].t} correct</div>
 :<div style={{fontSize:12,color:accessible?C.gray:"#ccc"}}>{ch.time}</div>}
-</div>
-</div>
-<div style={{textAlign:"right"}}>
-{next&&<span style={{fontSize:12,color:C.bronze,fontWeight:600}}>Start →</span>}
-{done&&refMode&&<span style={{fontSize:12,color:C.gray}}>Review</span>}
-</div>
+</div></div>
+<div>{next&&<span style={{fontSize:12,color:C.bronze,fontWeight:600}}>Start →</span>}{done&&refMode&&<span style={{fontSize:12,color:C.gray}}>Review</span>}</div>
 </div>
 })}
 
 {allDone&&(
 <div style={{background:C.ivory,border:"2px solid "+C.bronze,borderRadius:8,padding:24,marginTop:24,textAlign:"center"}}>
 <div style={{fontFamily:"Georgia,serif",fontSize:22,marginBottom:8}}>Healthcare 101 Complete</div>
-<div style={{fontSize:14,color:C.gray,marginBottom:16}}>{name&&name+" — "}{Object.values(completed).reduce(function(s,v){return s+v.s},0)}/{Object.values(completed).reduce(function(s,v){return s+v.t},0)} total correct across all chapters. Reference Mode unlocked.</div>
+<div style={{fontSize:14,color:C.gray,marginBottom:16}}>{name&&name+" — "}{Object.values(completed).reduce(function(s,v){return s+v.s},0)}/{Object.values(completed).reduce(function(s,v){return s+v.t},0)} total correct. Reference Mode unlocked.</div>
 <Btn variant="bronze" onClick={function(){
 var d={name:name,date:new Date().toISOString().split('T')[0],chapters:{}};
 CHAPTERS.forEach(function(ch){if(completed[ch.id])d.chapters["ch"+ch.id]={title:ch.title,score:completed[ch.id].s,total:completed[ch.id].t}});
@@ -519,6 +504,7 @@ var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="heal
 <Foot/>
 </div>
 </div>
+)}
 </div>);
 }
 
