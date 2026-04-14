@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Healthcare 101 v11 — Desta University</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#F8F6F1;color:#2D2D2D;-webkit-font-smoothing:antialiased;font-family:system-ui,-apple-system,sans-serif}
+select,input,textarea,button{font-family:inherit}input,textarea,select{outline:none}
+input:focus,textarea:focus,select:focus{border-color:#8B7355!important}
+button{transition:all .15s ease;border:none;cursor:pointer}
+button:not(:disabled):hover{opacity:.88}button:disabled{cursor:default;opacity:.4}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.content-block{font-size:15px;line-height:1.8;margin-bottom:16px;color:#2D2D2D}
+.content-block strong{color:#1E4A8A}
+.info-box{background:#EBF0F8;border-left:4px solid #1E4A8A;padding:16px;border-radius:0 8px 8px 0;margin:16px 0;font-size:14px;line-height:1.7}
+.warn-box{background:#FFF3E0;border-left:4px solid #FF9800;padding:16px;border-radius:0 8px 8px 0;margin:16px 0;font-size:14px;line-height:1.7}
+.rule-box{background:#FFEBEE;border-left:4px solid #F44336;padding:16px;border-radius:0 8px 8px 0;margin:16px 0;font-size:14px;line-height:1.7}
+.data-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.data-table th{background:#1E4A8A;color:#fff;padding:10px 12px;text-align:left;font-weight:600}
+.data-table td{padding:10px 12px;border-bottom:1px solid #E0E0E0}
+.data-table tr:nth-child(even) td{background:#f9f9f9}
+.ch-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px}
+.ch-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+var useState=React.useState;
+var C={charcoal:"#2D2D2D",bronze:"#8B7355",ivory:"#F8F6F1",blue:"#1E4A8A",blueLt:"#EBF0F8",white:"#FFF",green:"#4CAF50",greenLt:"#E8F5E9",red:"#F44336",redLt:"#FFEBEE",orange:"#FF9800",orangeLt:"#FFF3E0",purple:"#9C27B0",purpleLt:"#F3E5F5",gray:"#555",grayLt:"#E0E0E0"};
+function O(o,k,v){var n=Object.assign({},o);n[k]=v;return n}
+
+/* ===== CHAPTER DATA ===== */
+var CHAPTERS=[
+
+/* CH1 */
+{id:1,time:"3 min",title:"The US Healthcare System",content:[
+"The United States healthcare system is a mix of private and public insurance, employer-sponsored coverage, and government programs. Medicare covers seniors (65+). Medicaid covers low-income individuals. Most roles you recruit for operate in the **private sector**: outpatient clinics owned by physicians, nurse practitioners, or management companies like DestaHealth's clients.",
+"**How practices make money:** The primary source is **insurance reimbursement** — the patient's insurer pays the practice for services delivered. The practice submits a claim, the insurer reviews it, and pays an approved amount. Some practices also accept **self-pay (cash)** where the patient pays directly.",
+"**In-network** means the practice has a contract with the insurance company and agrees to accept their rates. Patients pay less (copay/coinsurance). **Out-of-network** means no contract — patients may pay full price upfront. Most patients prefer in-network providers because it costs them less."
+],exercises:[
+{type:"scenario",prompt:"A job posting says 'in-network with major insurers.' What does this tell you?",options:["The practice does not accept insurance","The practice has contracts with insurance companies and accepts their rates","The practice only sees cash-pay patients","The practice is government-run"],answer:1,why:"In-network means the practice has agreements with insurers. This typically means higher patient volume."},
+{type:"scenario",prompt:"A practice advertises as 'cash-pay only.' What does this likely mean?",options:["They have contracts with all major insurers","Smaller patient panel, higher per-visit revenue, different hiring profile","They only treat wealthy patients","They are not a real medical practice"],answer:1,why:"Cash-pay practices often have smaller panels but charge more per visit. The hiring profile may differ from insurance-based practices."},
+{type:"scenario",prompt:"Medicare covers which population?",options:["Children under 18","Low-income individuals","Seniors aged 65 and older","Military veterans"],answer:2,why:"Medicare is for seniors (65+). Medicaid is for low-income individuals. These are the two major government programs."},
+]},
+
+/* CH2 */
+{id:2,time:"3 min",title:"Practice Types and Care Settings",content:[
+"Understanding where a provider works tells you what kind of patients they see, how intense the care is, and what the schedule looks like. DestaHealth's clients primarily operate in **outpatient** settings.",
+"**Outpatient** = standard clinic with scheduled appointments. Patient comes in, gets care, goes home. **Telehealth** = same services delivered by video or phone. **Hybrid** = mix of in-person and telehealth. Most DestaHealth positions are hybrid.",
+"Higher-acuity settings include **IOP** (Intensive Outpatient — 3-5 days/week, 3+ hours/day), **PHP** (Partial Hospitalization — most of the day at facility), **Residential/Detox** (patient lives on-site, 24-hour care), and **Inpatient** (full hospitalization, psychiatric units, crisis stabilization).",
+"**Acuity** = the intensity of patient needs. A candidate with 10 years in inpatient psychiatry and one with 10 years in outpatient therapy have very different profiles. Both valuable — not interchangeable. The setting tells you as much as the title."
+],exercises:[
+{type:"rank",prompt:"Rank these settings from LOWEST to HIGHEST acuity:",items:["Telehealth","Outpatient","IOP","PHP","Residential","Inpatient"],answer:["Telehealth","Outpatient","IOP","PHP","Residential","Inpatient"]},
+{type:"scenario",prompt:"A candidate has 8 years in inpatient psychiatry. A client needs someone for an outpatient hybrid role. What should you note?",options:["They are overqualified — reject them","Their experience is in a much higher-acuity setting — note the difference but don't auto-reject","Their experience is irrelevant","Inpatient and outpatient are the same thing"],answer:1,why:"Different acuity levels mean different experience. Worth noting in your evaluation, but not an automatic disqualification."},
+{type:"scenario",prompt:"DOCs Medical Group requires on-site work. A candidate only wants telehealth. What do you do?",options:["Submit them anyway — they might change their mind","This is a mismatch — do not submit for DOCs","Ask DOCs to make an exception","Mark as Future Pipeline"],answer:1,why:"DOCs is on-site only, no telehealth. A telehealth-only candidate is a clear mismatch for this client."},
+]},
+
+/* CH3 */
+{id:3,time:"3 min",title:"Roles — Prescribers",content:[
+"Every candidate has a role and a credential. Knowing what each role does is the foundation of your work. **Prescribers** can prescribe medication.",
+"**Psychiatrist (MD or DO):** Diagnoses mental health conditions, prescribes and manages medication, may provide therapy. MD and DO have the same scope. Board certification is common. Highest-level prescriber.",
+"**PMHNP / PMHNP-BC:** Psychiatric Mental Health Nurse Practitioner. Diagnoses, prescribes medication, may provide therapy. BC = Board Certified (additional credential from ANCC). Often the most in-demand role at DestaHealth's clients.",
+"**NP / APRN:** Nurse Practitioner / Advanced Practice Registered Nurse. Provides primary or specialty care. Can diagnose, treat, and prescribe. May specialize in psychiatry, family medicine, or other areas.",
+"**PA / PA-C:** Physician Assistant, Certified. Provides medical care, diagnoses, treats, prescribes. Works under physician supervision (varies by state)."
+],exercises:[
+{type:"match",prompt:"Match each credential to the correct role:",items:[{term:"MD or DO",answer:"Psychiatrist"},{term:"PMHNP-BC",answer:"Psychiatric NP"},{term:"NP / APRN",answer:"General Nurse Practitioner"},{term:"PA-C",answer:"Physician Assistant"}],options:["Psychiatrist","Psychiatric NP","General Nurse Practitioner","Physician Assistant"]},
+{type:"scenario",prompt:"A client needs someone who can prescribe psychiatric medication. Which of these candidates qualifies?",options:["LCSW with 15 years of experience","PMHNP-BC with 3 years of experience","PhD in Clinical Psychology","MHT with 5 years of experience"],answer:1,why:"Only prescribers can prescribe medication. The PMHNP-BC is the prescriber here. Experience level of the LCSW is irrelevant — they cannot prescribe."},
+]},
+
+/* CH4 */
+{id:4,time:"4 min",title:"Roles — Therapists",content:[
+"**Therapists cannot prescribe medication.** They provide therapy, counseling, and clinical assessments.",
+"**LCSW** (Licensed Clinical Social Worker): Therapy, case management, advocacy. Can practice independently and bill insurance directly.",
+"**LPC** (Licensed Professional Counselor): Therapy and counseling. Same scope as LCSW for therapy. Title varies by state. **LMHC** (Licensed Mental Health Counselor) is the same role — used in FL, MA, NY instead of LPC.",
+"**LMFT** (Licensed Marriage and Family Therapist): Specializes in relationship and family therapy. Also provides individual therapy.",
+"**PsyD / PhD:** Doctor of Psychology (clinical) or Doctor of Philosophy (research + clinical). Provides therapy, psychological testing, evaluations. Cannot prescribe in most states. Both are doctoral-level.",
+"**Licensed vs. Unlicensed:** Licensed clinicians (LCSW, LPC, LMFT) can practice independently. Unlicensed clinicians have their degree but are still accumulating supervised hours. They may hold titles like LMSW, LAC, LMFT-A. They require a supervisor on staff. When you see 'Associate,' 'Provisional,' or 'Intern' in a credential — flag it."
+],exercises:[
+{type:"scenario",prompt:"A candidate's credential says 'LMSW.' What does this tell you?",options:["They are fully licensed and can practice independently","They are pre-licensed and still need supervised hours","They are a medical doctor","This is not a real credential"],answer:1,why:"LMSW = Licensed Master Social Worker. The 'M' instead of 'C' means they haven't completed supervised clinical hours for full LCSW licensure. They need a supervisor."},
+{type:"scenario",prompt:"Is LMHC the same scope as LPC?",options:["No — LMHC can prescribe, LPC cannot","No — they are completely different roles","Yes — same role, different state titles (LMHC used in FL, MA, NY)","Yes — but LMHC is always senior to LPC"],answer:2,why:"LPC and LMHC are the same scope of practice. Different states use different titles. Florida, Massachusetts, and New York use LMHC."},
+{type:"match",prompt:"Classify each credential as Prescriber or Therapist:",items:[{term:"PMHNP-BC",answer:"Prescriber"},{term:"LCSW",answer:"Therapist"},{term:"MD (Psychiatry)",answer:"Prescriber"},{term:"LPC",answer:"Therapist"},{term:"PA-C",answer:"Prescriber"},{term:"PsyD",answer:"Therapist"}],options:["Prescriber","Therapist"]},
+]},
+
+/* CH5 */
+{id:5,time:"4 min",title:"Licensure and Credentials",content:[
+"**Licensure is the most important qualification.** If a candidate does not hold the correct license for the state where the position is located, they cannot legally practice there.",
+"Licenses are issued by **state boards**. A license in one state does not automatically apply in another. A CT license holder needs a separate NJ license to work in New Jersey. Most mental health licenses (LCSW, LPC, LMFT) are **state-specific** with no compact agreements.",
+"Licenses have **expiration dates** and must be renewed. An expired license = candidate cannot practice until renewed.",
+"**Board certification** is additional on top of licensure. Example: PMHNP-BC — the PMHNP is the license, BC (Board Certified) is the extra credential from ANCC. Often preferred but not always legally required.",
+"**States that matter:** Connecticut (Sterling, Contemporary Care, DOCs), New Jersey (Contemporary Care), Florida (Contemporary Care), Massachusetts (future pipeline)."
+],exercises:[
+{type:"scenario",prompt:"A candidate holds an active CT license. Can they see patients in New York?",options:["Yes — CT and NY are neighboring states","Yes — all licenses work nationally","No — they need a separate NY license","Only if they work via telehealth"],answer:2,why:"Licenses are state-specific. A CT license only covers CT. They need a separate NY license regardless of proximity."},
+{type:"scenario",prompt:"A candidate's license expired 2 months ago. What do you do?",options:["Submit them — they can renew later","Disqualify until they provide proof of renewal","It doesn't matter as long as they have experience","Ask the client if they'll accept it"],answer:1,why:"Expired license = cannot practice. No exceptions. Disqualify until renewed."},
+{type:"scenario",prompt:"You search the CT eLicense Portal for a candidate and find nothing. Next step?",options:["Submit them anyway — the website might be wrong","Try alternate spellings, maiden names, or nurses.com as secondary source","Disqualify immediately","Call the state board"],answer:1,why:"Try alternate spellings and secondary sources first. If still not found, do not advance — flag for Biruh."},
+{type:"scenario",prompt:"What does 'under investigation' mean for a license?",options:["It's fine — still active","Do not advance. Flag for Biruh immediately","Submit with a note","Wait 30 days and check again"],answer:1,why:"Under investigation = do not advance. Flag for Biruh. This is a serious red flag."},
+]},
+
+/* CH6 */
+{id:6,time:"3 min",title:"Scope of Practice",content:[
+"Scope of practice = what a provider is trained and **legally authorized** to do. Mismatching scope to role is an auto-disqualify.",
+"**Can prescribe:** Psychiatrists (MD/DO), PMHNPs, NPs, PAs (with supervision in some states).",
+"**Cannot prescribe:** LCSWs, LPCs, LMHCs, LMFTs, PsyDs, PhDs, MHTs.",
+"**Can practice independently:** Psychiatrists, fully licensed therapists (LCSW, LPC, LMFT), PsyDs/PhDs. NPs and PAs vary by state.",
+"**Cannot practice independently:** MHTs (always need supervision), unlicensed/pre-licensed clinicians.",
+"If a client needs a prescriber, you are looking for MD, DO, PMHNP, NP, or PA. An LCSW cannot fill that role no matter how experienced they are. If a client needs a therapist, you are looking for LCSW, LPC, LMHC, LMFT, PsyD, or PhD."
+],exercises:[
+{type:"scenario",prompt:"A client needs someone who can prescribe AND provide therapy. Best fit?",options:["LCSW","PMHNP-BC","MHT","PhD in Psychology"],answer:1,why:"PMHNPs can both prescribe and provide therapy. LCSWs and PhDs can do therapy but not prescribe. MHTs can do neither independently."},
+{type:"scenario",prompt:"A job description says 'independent practice required.' Which candidate is disqualified?",options:["LCSW with 10 years experience","Psychiatrist (MD)","LMSW (pre-licensed)","PsyD"],answer:2,why:"LMSW is pre-licensed and requires supervision. They cannot practice independently. The others can."},
+{type:"match",prompt:"Can this role prescribe medication?",items:[{term:"LCSW",answer:"No"},{term:"PMHNP-BC",answer:"Yes"},{term:"PsyD",answer:"No"},{term:"PA-C",answer:"Yes"},{term:"MHT",answer:"No"},{term:"MD Psychiatrist",answer:"Yes"}],options:["Yes","No"]},
+]},
+
+/* CH7 */
+{id:7,time:"3 min",title:"Patient Populations",content:[
+"Providers specialize in specific patient groups. A candidate's population experience must match the client's needs.",
+"**Child/Adolescent (under 18):** Specialized training required. Not all providers are credentialed for minors. **Sterling Institute requires this experience — non-negotiable.**",
+"**Adult (18-65):** The most common population. Most candidates have adult experience.",
+"**Geriatric (65+):** Specialized knowledge of aging, cognitive decline, medication sensitivity. Less common.",
+"**Across the Lifespan (all ages):** Some providers see all ages. Strong qualification but less common for specialists."
+],exercises:[
+{type:"scenario",prompt:"A candidate has 10 years of adult psychiatry experience but no child/adolescent work. Can they be submitted to Sterling Institute?",options:["Yes — 10 years is impressive","No — Sterling requires child/adolescent experience, non-negotiable","Only if they're willing to learn","Submit with a note about the gap"],answer:1,why:"Sterling requires child/adolescent experience. This is non-negotiable regardless of how experienced the candidate is with adults."},
+{type:"match",prompt:"Match each candidate to their population specialty:",items:[{term:"Treats patients aged 5-17 with anxiety",answer:"Child/Adolescent"},{term:"Specializes in dementia and late-life depression",answer:"Geriatric"},{term:"General outpatient therapy for working professionals",answer:"Adult"},{term:"Sees patients from age 3 to 90",answer:"Across the Lifespan"}],options:["Child/Adolescent","Adult","Geriatric","Across the Lifespan"]},
+]},
+
+/* CH8 */
+{id:8,time:"3 min",title:"Services and Treatment Types",content:[
+"Not all providers perform all services. When a job description lists specific services, know what they are.",
+"**Medication Management:** Prescribing and monitoring medications. Provided by psychiatrists, PMHNPs, NPs, PAs.",
+"**Therapy / Counseling:** Talk therapy — individual, group, couples, family. Provided by LCSWs, LPCs, LMFTs, PsyDs, PhDs. Some psychiatrists and PMHNPs also provide therapy.",
+"**Psychiatric Evaluation:** Initial assessment of mental health condition. Determines diagnosis and treatment plan. Provided by psychiatrists, PMHNPs, NPs.",
+"**Psychological Testing:** Formal assessments for cognitive, behavioral, emotional conditions. Specialized skill — PsyDs and PhDs only.",
+"**TMS (Transcranial Magnetic Stimulation):** Non-invasive brain stimulation for depression. Requires specialized equipment. **Spravato (esketamine):** In-clinic nasal spray for treatment-resistant depression. Requires REMS certification."
+],exercises:[
+{type:"match",prompt:"Who provides each service?",items:[{term:"Medication Management",answer:"Prescribers (MD, PMHNP, NP, PA)"},{term:"Psychological Testing",answer:"PsyD / PhD only"},{term:"Therapy / Counseling",answer:"Therapists (LCSW, LPC, LMFT, PsyD, PhD)"},{term:"TMS",answer:"Psychiatrists, trained NPs"}],options:["Prescribers (MD, PMHNP, NP, PA)","PsyD / PhD only","Therapists (LCSW, LPC, LMFT, PsyD, PhD)","Psychiatrists, trained NPs"]},
+{type:"scenario",prompt:"A job posting requires 'psychological testing experience.' Which candidate fits?",options:["PMHNP-BC with 5 years experience","LCSW who does individual therapy","PsyD with testing certification","PA-C in psychiatry"],answer:2,why:"Psychological testing is a specialized skill performed by PsyDs and PhDs. Other roles do not typically perform formal psychological testing."},
+]},
+
+/* CH9 */
+{id:9,time:"2 min",title:"Telehealth",content:[
+"Telehealth is healthcare delivered by video, phone, or digital platforms. It requires the **same licensure** as in-person care.",
+"**Critical rule:** The provider must hold a license in the state where the **patient** is located — not where the provider is sitting. A PMHNP licensed in CT seeing a CT patient via telehealth from their home = legal. The same PMHNP seeing a NY patient without a NY license = illegal.",
+"Some candidates prefer telehealth-only positions. If the client requires on-site (like DOCs Medical Group), a telehealth-only candidate is a mismatch.",
+"**Hybrid** means some days on-site, some days telehealth. Most DestaHealth positions are hybrid. Note candidate preferences — it affects client match."
+],exercises:[
+{type:"scenario",prompt:"A PMHNP is licensed in CT only. They want to work from home in CT and see patients in NY via telehealth. Is this legal?",options:["Yes — telehealth has no state restrictions","Yes — the provider is in CT so CT license applies","No — they need a NY license because the patient is in NY","No — telehealth is not allowed for mental health"],answer:2,why:"License follows the patient's location, not the provider's location. NY patient = need NY license."},
+{type:"scenario",prompt:"A candidate says they only want telehealth work. Which DestaHealth client is automatically ruled out?",options:["Sterling Institute","Contemporary Care","DOCs Medical Group","All of them"],answer:2,why:"DOCs Medical Group is on-site only, no telehealth. Sterling and Contemporary Care offer hybrid which includes telehealth days."},
+]},
+
+/* CH10 */
+{id:10,time:"4 min",title:"Compensation Structures",content:[
+"You do not set or negotiate compensation. But you need to understand how it works to interpret postings and evaluate candidate expectations.",
+"**Base Salary:** Fixed annual amount. Common for psychiatrists, NPs, PAs. **Base + Bonus:** Fixed salary plus performance bonus. **Percentage-Based:** Provider earns a % of revenue generated (typically 50-60%). Common for therapists — sometimes called a 'split.' **Hourly:** Paid by the hour. Common for part-time and support roles.",
+"**W2 (Employee):** Practice controls schedule, provides equipment. Employer withholds taxes. Employee gets benefits (health insurance, PTO, retirement, malpractice coverage).",
+"**1099 (Independent Contractor):** Sets own schedule, uses own equipment. Pays ALL taxes themselves (self-employment tax). No benefits — must arrange own insurance, retirement, malpractice. Contract can be ended more easily.",
+"**Key insight:** $200,000 on 1099 is NOT the same as $200,000 on W2. The 1099 contractor pays their own taxes and benefits. A W2 offer of $180,000 with benefits might actually be better. You don't need to calculate this — just understand they are not directly comparable."
+],exercises:[
+{type:"match",prompt:"Classify each characteristic as W2 or 1099:",items:[{term:"Employer withholds taxes",answer:"W2"},{term:"Must arrange own malpractice insurance",answer:"1099"},{term:"Eligible for PTO and retirement",answer:"W2"},{term:"Pays self-employment tax quarterly",answer:"1099"},{term:"Practice controls your schedule",answer:"W2"},{term:"Sets own hours, more independence",answer:"1099"}],options:["W2","1099"]},
+{type:"scenario",prompt:"A candidate asks about salary. What do you do?",options:["Provide estimated ranges from online research","Tell them compensation is discussed during the screening call with Farhaz","Make up a number that sounds reasonable","Tell them you don't handle compensation"],answer:1,why:"Direct compensation questions to the screening call. Do not provide specific numbers unless authorized by Biruh."},
+]},
+
+/* CH11 */
+{id:11,time:"4 min",title:"Key Terminology",content:[
+"These terms appear in job descriptions, candidate conversations, and practice descriptions. Know them.",
+"**EHR** = Electronic Health Record (documentation software). **Credentialing** = process to be approved to bill insurance (takes 60-120 days). **Paneling** = being in-network with specific insurance plans.",
+"**Caseload** = number of active patients assigned to a provider. **No-Show Rate** = percentage of missed appointments (affects provider income). **Caseload Ramp** = period where new provider builds patient panel (2-6 months).",
+"**FTE** = Full-Time Equivalent. 1.0 FTE = full-time. 0.5 = half-time. **CME** = Continuing Medical Education (required ongoing training — job postings may say 'CME allowance provided'). **Malpractice Insurance** = protects providers from patient care lawsuits.",
+"**RCM** = Revenue Cycle Management — the full billing and collections process. This is a future DestaHealth service line."
+],exercises:[
+{type:"fill",prompt:"The process to be approved to bill insurance companies, taking 60-120 days, is called _______.",accepts:["credentialing","credential"],answer:"credentialing"},
+{type:"fill",prompt:"_______ stands for Full-Time Equivalent. 1.0 = full-time, 0.5 = half-time.",accepts:["fte"],answer:"FTE"},
+{type:"fill",prompt:"The period where a new provider builds their patient panel over 2-6 months is called caseload _______.",accepts:["ramp","ramp-up","ramp up"],answer:"ramp"},
+{type:"fill",prompt:"_______ is software used for documenting patient care (Electronic Health Record).",accepts:["ehr"],answer:"EHR"},
+]},
+
+/* CH12 */
+{id:12,time:"4 min",title:"DestaHealth Client Map",content:[
+"This connects everything to the practices you will recruit for.",
+"**Sterling Institute | HIGH PRIORITY** — Connecticut. Outpatient, hybrid. Child and adolescent psychiatry. Key roles: Psychiatrists, PMHNPs, therapists with child/adolescent experience. CT license required. Child experience is non-negotiable.",
+"**Contemporary Care | MEDIUM PRIORITY** — Connecticut, New Jersey, Florida. Outpatient, hybrid. General outpatient mental health. Key roles: Psychiatrists, PMHNPs, therapists. License must match the specific state of the position.",
+"**DOCs Medical Group | STANDARD PRIORITY** — Connecticut. On-site only, no telehealth. Primary care and behavioral health. Key roles: Psychiatrists, NPs, PAs, MHTs. CT license required. 3x12-hour shifts/week, weekend rotation required.",
+"**Ritu Suri & Associates | Primary Care** — added to ATS. Primary care focus. Details to be confirmed by Rylan.",
+"**How to match:** (1) license state, (2) credential type, (3) population experience, (4) setting preference. A candidate can match multiple clients. If no match, log as Future Pipeline."
+],exercises:[
+{type:"scenario",prompt:"PMHNP-BC, CT license, 5 years child/adolescent, prefers hybrid. Best client match?",options:["DOCs Medical Group","Contemporary Care","Sterling Institute","Ritu Suri & Associates"],answer:2,why:"CT license + child/adolescent experience + hybrid preference = Sterling Institute. This is their ideal candidate profile."},
+{type:"scenario",prompt:"LCSW, FL license only, general outpatient, prefers hybrid. Best match?",options:["Sterling Institute","Contemporary Care (Florida)","DOCs Medical Group","No match — Future Pipeline"],answer:1,why:"FL license matches Contemporary Care's Florida locations. General outpatient fits their model. Hybrid available."},
+{type:"scenario",prompt:"MD Psychiatrist, CT license, adult/geriatric, willing to work on-site including weekends. Best match?",options:["Sterling Institute","Contemporary Care","DOCs Medical Group","NJ - Psych Candidates"],answer:2,why:"CT license + on-site + weekends = DOCs Medical Group. No child/adolescent experience rules out Sterling."},
+{type:"scenario",prompt:"PMHNP, MA license only, telehealth-only preference. Best match?",options:["Sterling Institute","Contemporary Care","DOCs Medical Group","No current match — Future Pipeline"],answer:3,why:"MA-only license doesn't match any current client state (CT, NJ, FL). Log as Future Pipeline for when MA openings develop."},
+]},
+
+/* CH13 */
+{id:13,time:"5 min",title:"Putting It All Together",content:[
+"This final chapter tests everything. You will evaluate complete candidate profiles using knowledge from every previous chapter.",
+"**When you source a candidate:** Identify their role (Ch 3-4), verify their license state (Ch 5), check scope of practice (Ch 6), note population experience (Ch 7), and match to a DestaHealth client (Ch 12).",
+"**When something doesn't make sense:** Ask Biruh. Do not guess. Do not assume."
+],exercises:[
+{type:"scenario",prompt:"Candidate: Dr. Sarah Kim, MD Psychiatrist. CT license (active, verified). 8 years outpatient. Adult and geriatric populations. No child/adolescent. Prefers hybrid. What is the best client match?",options:["Sterling Institute","Contemporary Care (CT)","DOCs Medical Group","No match"],answer:1,why:"CT license + hybrid preference + no child/adolescent = Contemporary Care CT. Not Sterling (needs child exp). Could also match DOCs if willing to do on-site weekends."},
+{type:"scenario",prompt:"Candidate: James Wright, LPC. FL license only. 3 years community mental health. Wants telehealth-only. What is his status?",options:["Submit to Contemporary Care FL immediately","Submit to DOCs Medical Group","Flag: FL license matches Contemporary Care FL, but telehealth-only preference needs clarification since Contemporary Care is hybrid","Disqualify — no match"],answer:2,why:"FL license matches Contemporary Care FL. But telehealth-only vs hybrid needs clarification before submitting. Flag the preference mismatch."},
+{type:"scenario",prompt:"Candidate: Anna Lee, PMHNP-BC. NJ license. 2 years outpatient. Adult population. Willing to work hybrid. First action?",options:["Send outreach email","Enter in ATS","Verify license on NJ Division of Consumer Affairs","Forward to Farhaz for screening"],answer:2,why:"License verification always comes first. Before outreach, ATS entry, or anything else — verify the license."},
+{type:"scenario",prompt:"You verified Anna Lee's NJ license — Active, expires 2027. What ATS status do you assign?",options:["0 - New Candidate","1 - Initial Screening","2 - DestaHealth Review","5 - Offer Accepted"],answer:0,why:"She just entered the system. Status 0 - New Candidate. She hasn't been screened yet."},
+{type:"scenario",prompt:"Which client does Anna Lee (PMHNP-BC, NJ, adult, hybrid) best match?",options:["Sterling Institute","Contemporary Care (NJ)","DOCs Medical Group","Ritu Suri & Associates"],answer:1,why:"NJ license matches Contemporary Care NJ locations. PMHNP-BC is a key role they need. Hybrid fits their model."},
+]},
+];
+
+/* ===== COMPONENTS ===== */
+function Card(p){return <div style={Object.assign({background:C.white,border:"1px solid "+C.grayLt,borderRadius:8,padding:20,marginBottom:16},p.style||{})}>{p.children}</div>}
+function Btn(p){var st={primary:{background:C.charcoal,color:C.white},bronze:{background:C.bronze,color:C.white},outline:{background:"transparent",color:C.charcoal,border:"1px solid "+C.charcoal},green:{background:C.green,color:C.white}};return <button onClick={p.onClick} disabled={p.disabled} style={Object.assign({padding:"10px 24px",borderRadius:6,fontSize:14,fontWeight:600},st[p.variant||"primary"]||st.primary,p.style||{})}>{p.children}</button>}
+
+function Header(p){return(
+<div style={{borderBottom:"2px solid "+C.bronze,padding:"16px 0",marginBottom:24,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+<div style={{display:"flex",alignItems:"center",gap:16}}>
+{p.showBack&&<button onClick={p.onBack} style={{background:"transparent",color:C.bronze,fontSize:13,fontWeight:600,padding:"6px 14px",borderRadius:4,border:"1px solid "+C.bronze}}>← Back</button>}
+<div style={{cursor:"pointer"}} onClick={p.onHome}>
+<div style={{fontFamily:"Georgia,serif",fontSize:18,letterSpacing:4,color:C.charcoal,lineHeight:1.2}}>D E S T A</div>
+<div style={{fontFamily:"Georgia,serif",fontSize:18,letterSpacing:4,color:C.bronze,lineHeight:1.2}}>W O R K S</div>
+</div></div>
+<div style={{textAlign:"right"}}><div style={{fontSize:13,color:C.blue,fontWeight:600}}>Healthcare 101</div><div style={{fontSize:12,color:C.gray}}>Interactive Learning</div></div>
+</div>)}
+
+function Foot(){return(
+<div style={{borderTop:"1px solid "+C.bronze,marginTop:40,paddingTop:12,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+<div style={{fontSize:11,color:C.gray}}>Developed by Desta Works, Addis Ababa, Ethiopia — v7</div>
+<div style={{fontFamily:"Georgia,serif",fontSize:12,letterSpacing:3,color:C.charcoal}}>DESTA WORKS</div>
+</div>)}
+
+/* ===== EXERCISE RENDERER ===== */
+function ExerciseBlock(p){
+var ex=p.exercise,idx=p.idx,ans=p.answers,fb=p.feedback,onAns=p.onAnswer,onCheck=p.onCheck;
+var k="ex-"+idx;
+
+if(ex.type==="scenario"){
+return(<Card style={{borderLeft:"4px solid "+(fb[k]?"4px solid "+(fb[k].ok?C.green:C.red):C.blue)}}>
+<div style={{fontWeight:600,fontSize:14,marginBottom:12,lineHeight:1.5}}>{ex.prompt}</div>
+<div style={{display:"flex",flexDirection:"column",gap:8}}>
+{ex.options.map(function(opt,oi){
+var sel=ans[k]===oi;var f=fb[k];var isC=f&&oi===ex.answer;var isW=f&&sel&&!f.ok;
+return <button key={oi} onClick={function(){if(!f)onAns(k,oi)}} disabled={!!f}
+style={{padding:"12px 16px",borderRadius:8,fontSize:14,textAlign:"left",lineHeight:1.5,background:isC?C.greenLt:isW?C.redLt:sel?C.blueLt:"transparent",border:"1px solid "+(isC?C.green:isW?C.red:sel?C.blue:C.grayLt)}}>{opt}{isC?" ✓":""}{isW?" ✗":""}</button>
+})}</div>
+{ans[k]!==undefined&&!fb[k]&&<div style={{marginTop:10,textAlign:"right"}}><Btn variant="outline" onClick={function(){onCheck(k,ans[k]===ex.answer,ex.why)}} style={{fontSize:13,padding:"8px 16px"}}>Check</Btn></div>}
+{fb[k]&&<div style={{marginTop:12,padding:12,borderRadius:8,background:fb[k].ok?C.greenLt:C.redLt,fontSize:13,lineHeight:1.6}}><strong>{fb[k].ok?"✓ Correct":"✗ Incorrect"}</strong><br/>{fb[k].why}</div>}
+</Card>);
+}
+
+if(ex.type==="match"){
+return(<Card style={{borderLeft:"4px solid "+C.purple}}>
+<div style={{fontWeight:600,fontSize:14,marginBottom:12}}>{ex.prompt}</div>
+{ex.items.map(function(item,ii){
+var mk=k+"-"+ii;var f=fb[mk];
+return <div key={ii} style={{display:"flex",alignItems:"center",gap:12,marginBottom:10,flexWrap:"wrap"}}>
+<div style={{minWidth:160,fontWeight:600,fontSize:14,padding:"8px 12px",background:C.ivory,borderRadius:6}}>{item.term}</div>
+<span style={{color:C.gray}}>→</span>
+<select value={ans[mk]||""} onChange={function(e){onAns(mk,e.target.value)}} disabled={!!f}
+style={{padding:8,borderRadius:4,border:"1px solid "+(f?(f.ok?C.green:C.red):C.grayLt),fontSize:13,minWidth:180,background:f?(f.ok?C.greenLt:C.redLt):C.white}}>
+<option value="">Select...</option>
+{ex.options.map(function(o){return <option key={o} value={o}>{o}</option>})}
+</select>
+{ans[mk]&&!f&&<Btn variant="outline" onClick={function(){onCheck(mk,ans[mk]===item.answer,item.answer)}} style={{fontSize:12,padding:"6px 14px"}}>Check</Btn>}
+{f&&!f.ok&&<span style={{fontSize:12,color:C.red}}>→ {f.why}</span>}
+</div>})}
+</Card>);
+}
+
+if(ex.type==="fill"){
+return(<Card style={{borderLeft:"4px solid "+C.orange}}>
+<div style={{fontSize:15,lineHeight:1.7,marginBottom:10}}>
+{ex.prompt.split("_______").map(function(part,pi,arr){return <span key={pi}>{part}{pi<arr.length-1&&<span style={{display:"inline-block",minWidth:140,borderBottom:"2px solid "+(fb[k]?(fb[k].ok?C.green:C.red):C.bronze),margin:"0 4px"}}>
+{fb[k]?<strong style={{color:fb[k].ok?C.green:C.red,fontSize:14}}>{fb[k].ok?(ans[k]||""):fb[k].why}</strong>
+:<input value={ans[k]||""} onChange={function(e){onAns(k,e.target.value)}} onKeyDown={function(e){if(e.key==="Enter"&&ans[k]){var v=(ans[k]||"").trim().toLowerCase();var ok=ex.accepts.some(function(a){return v.indexOf(a)>=0});onCheck(k,ok,ex.answer)}}}
+style={{border:"none",background:"transparent",fontSize:15,fontWeight:600,width:"100%",outline:"none"}} placeholder="..."/>}
+</span>}</span>})}
+</div>
+{ans[k]&&!fb[k]&&<div style={{textAlign:"right"}}><Btn variant="outline" onClick={function(){var v=(ans[k]||"").trim().toLowerCase();var ok=ex.accepts.some(function(a){return v.indexOf(a)>=0});onCheck(k,ok,ex.answer)}} style={{fontSize:12,padding:"6px 14px"}}>Check</Btn></div>}
+</Card>);
+}
+
+if(ex.type==="rank"){
+var current=ans[k]||ex.items.slice();
+var swap=function(i,dir){if(!fb[k]){var arr=current.slice();var j=i+dir;if(j>=0&&j<arr.length){var tmp=arr[i];arr[i]=arr[j];arr[j]=tmp;onAns(k,arr)}}};
+return(<Card style={{borderLeft:"4px solid "+C.orange}}>
+<div style={{fontWeight:600,fontSize:14,marginBottom:12}}>{ex.prompt}</div>
+<div style={{display:"flex",flexDirection:"column",gap:6}}>
+{current.map(function(item,i){
+var isCorrect=fb[k]&&current[i]===ex.answer[i];
+var isWrong=fb[k]&&current[i]!==ex.answer[i];
+return <div key={item} style={{display:"flex",alignItems:"center",gap:8}}>
+<div style={{display:"flex",flexDirection:"column",gap:2}}>
+<button onClick={function(){swap(i,-1)}} disabled={i===0||!!fb[k]} style={{fontSize:10,padding:"2px 6px",background:C.grayLt,borderRadius:3}}>▲</button>
+<button onClick={function(){swap(i,1)}} disabled={i===current.length-1||!!fb[k]} style={{fontSize:10,padding:"2px 6px",background:C.grayLt,borderRadius:3}}>▼</button>
+</div>
+<div style={{flex:1,padding:"10px 14px",borderRadius:6,fontSize:14,fontWeight:500,background:isCorrect?C.greenLt:isWrong?C.redLt:C.ivory,border:"1px solid "+(isCorrect?C.green:isWrong?C.red:C.grayLt)}}>
+<span style={{color:C.gray,marginRight:8}}>{i+1}.</span>{item}
+</div></div>})}
+</div>
+{!fb[k]&&<div style={{marginTop:12,textAlign:"right"}}><Btn variant="outline" onClick={function(){var correct=current.every(function(item,i){return item===ex.answer[i]});onCheck(k,correct,"Correct order: "+ex.answer.join(" → "))}} style={{fontSize:13,padding:"8px 16px"}}>Check Order</Btn></div>}
+{fb[k]&&<div style={{marginTop:12,padding:12,borderRadius:8,background:fb[k].ok?C.greenLt:C.redLt,fontSize:13}}><strong>{fb[k].ok?"✓ Correct order!":"✗ "+fb[k].why}</strong></div>}
+</Card>);
+}
+
+return null;
+}
+
+/* ===== CHAPTER VIEW ===== */
+function ChapterView(p){
+var ch=p.chapter;
+var _a=useState({}),ans=_a[0],sA=_a[1];
+var _f=useState({}),fb=_f[0],sF=_f[1];
+var _done=useState(false),done=_done[0],sDone=_done[1];
+var _reading=useState(true),reading=_reading[0],sReading=_reading[1];
+var _att=useState(1),attempts=_att[0],sAtt=_att[1];
+var _start=useState(Date.now()),startTime=_start[0],sStart=_start[1];
+
+var onAns=function(k,v){sA(O(ans,k,v))};
+var onCheck=function(k,ok,why){
+sF(O(fb,k,{ok:ok,why:why}));
+if(!ok&&p.send){p.send({name:p.userName,event:"wrong_answer",source:"Healthcare 101",chapter:"Ch "+ch.id+": "+ch.title,details:why,attempts:attempts})}
+};
+
+var allExDone=ch.exercises.every(function(ex,i){
+var k="ex-"+i;
+if(ex.type==="match")return ex.items.every(function(_,ii){return !!fb[k+"-"+ii]});
+return !!fb[k];
+});
+
+var score=0,total=0,wrong=0;
+ch.exercises.forEach(function(ex,i){
+var k="ex-"+i;
+if(ex.type==="match"){ex.items.forEach(function(_,ii){total++;if(fb[k+"-"+ii]&&fb[k+"-"+ii].ok)score++;if(fb[k+"-"+ii]&&!fb[k+"-"+ii].ok)wrong++})}
+else{total++;if(fb[k]&&fb[k].ok)score++;if(fb[k]&&!fb[k].ok)wrong++}
+});
+var pct=total>0?Math.round(score/total*100):0;
+
+if(reading)return(<div style={{animation:"fadeUp .4s ease"}}>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
+<h2 style={{color:C.charcoal,fontSize:22}}>Chapter {ch.id}: {ch.title}</h2>
+<span style={{fontSize:13,color:C.gray,background:C.ivory,padding:"4px 12px",borderRadius:12}}>{ch.id} / 13</span>
+</div>
+{ch.content.map(function(para,i){
+if(para.indexOf("**")>=0){
+var parts=para.split(/\*\*(.*?)\*\*/g);
+return <p key={i} className="content-block">{parts.map(function(part,j){return j%2===1?<strong key={j}>{part}</strong>:<span key={j}>{part}</span>})}</p>
+}
+return <p key={i} className="content-block">{para}</p>
+})}
+<div style={{marginTop:24,textAlign:"right"}}>
+<Btn variant="bronze" onClick={function(){sReading(false);window.scrollTo(0,0)}}>Test Your Understanding →</Btn>
+</div>
+</div>);
+
+return(<div style={{animation:"fadeUp .4s ease"}}>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
+<h2 style={{color:C.charcoal,fontSize:22}}>Chapter {ch.id}: Apply</h2>
+<div style={{display:"flex",gap:8}}>
+<button onClick={function(){sReading(true);window.scrollTo(0,0)}} style={{background:"transparent",color:C.bronze,fontSize:13,fontWeight:600,padding:"6px 14px",borderRadius:4,border:"1px solid "+C.bronze}}>← Re-read</button>
+</div>
+</div>
+
+{ch.exercises.map(function(ex,i){
+return <ExerciseBlock key={i} exercise={ex} idx={i} answers={ans} feedback={fb} onAnswer={onAns} onCheck={onCheck}/>
+})}
+
+{allExDone&&!done&&(
+<div style={{background:pct>=70?C.greenLt:C.redLt,border:"2px solid "+(pct>=70?C.green:C.red),borderRadius:8,padding:24,textAlign:"center",marginTop:20}}>
+<div style={{fontSize:36,fontWeight:700,color:pct>=70?C.green:C.red,fontFamily:"Georgia,serif"}}>{pct}%</div>
+<div style={{fontSize:14,color:C.gray}}>{score}/{total} correct</div>
+<div style={{marginTop:16}}>
+{pct>=70?<Btn variant="green" onClick={function(){sDone(true);var timeSec=Math.round((Date.now()-startTime)/1000);p.onComplete(score,total,wrong,attempts,timeSec)}}>Complete Chapter →</Btn>
+:<div><div style={{fontSize:14,color:C.red,marginBottom:12}}>Below 70%. Review the material and try again.</div><Btn variant="outline" onClick={function(){
+var timeSec=Math.round((Date.now()-startTime)/1000);
+if(p.send){p.send({name:p.userName,event:"chapter_failed",source:"Healthcare 101",chapter:"Ch "+ch.id+": "+ch.title,score:score,total:total,wrong:wrong,attempts:attempts,timeSec:timeSec,percentage:pct})}
+sA({});sF({});sAtt(attempts+1);sStart(Date.now());sReading(true);window.scrollTo(0,0);
+}}>Re-read & Retry</Btn></div>}
+</div>
+</div>
+)}
+</div>);
+}
+
+/* ===== APP ===== */
+function App(){
+var _v=useState("home"),view=_v[0],sV=_v[1];
+var _c=useState({}),completed=_c[0],sC=_c[1];
+var _n=useState(""),name=_n[0],sN=_n[1];
+var _ns=useState(false),ns=_ns[0],sNs=_ns[1];
+var _ref=useState(false),refMode=_ref[0],sRef=_ref[1];
+var _intr=useState(true),intro=_intr[0],sIntr=_intr[1];
+var _vi=useState({}),visited=_vi[0],sVi=_vi[1];
+var _sc=useState(0),scene=_sc[0],sSc=_sc[1];
+var _fad=useState(false),fading=_fad[0],sFad=_fad[1];
+var _sent=useState(false),sent=_sent[0],sSent=_sent[1];
+var _em=useState(""),email=_em[0],sEm=_em[1];
+var _emDone=useState(false),emDone=_emDone[0],sEmDone=_emDone[1];
+var _cfg=useState({blocked:[],invites:[],settings:{}}),cfg=_cfg[0],sCfg=_cfg[1];
+var _blocked=useState(false),isBlocked=_blocked[0],sBlocked=_blocked[1];
+var _denied=useState(false),isDenied=_denied[0],sDenied=_denied[1];
+/* Auth state */
+var _ph=useState("auth"),ph=_ph[0],sPh=_ph[1];
+var _ue=useState(""),ue=_ue[0],sUE=_ue[1];
+var _pw=useState(""),pw=_pw[0],sPW=_pw[1];
+var _ae=useState(""),ae=_ae[0],sAE=_ae[1];
+var _authTab=useState("signin"),authTab=_authTab[0],sAuthTab=_authTab[1];
+var _gLoading=useState(false),gLoading=_gLoading[0],sGLoading=_gLoading[1];
+var _gVerified=useState(false),gVerified=_gVerified[0],sGVerified=_gVerified[1];
+var _rName=useState(""),rName=_rName[0],sRName=_rName[1];
+var _rEmail=useState(""),rEmail=_rEmail[0],sREmail=_rEmail[1];
+var _rOrg=useState(""),rOrg=_rOrg[0],sROrg=_rOrg[1];
+var _rMsg=useState(""),rMsg=_rMsg[0],sRMsg=_rMsg[1];
+var _rOk=useState(""),rOk=_rOk[0],sROk=_rOk[1];
+var ADMINS=["biruhmezgebu1@gmail.com"];
+
+var SHEET_URL="https://script.google.com/macros/s/AKfycbwa725xDxl3auLiZQ-AYxM1--rUOqaYCHM8RXr4mY_-5bX6qUloUUw3uufLBSD6YCBqQQ/exec";
+
+var send=function(payload){try{fetch(SHEET_URL,{method:"POST",body:JSON.stringify(payload),mode:"no-cors"})}catch(e){}};
+var post=function(d){return fetch(SHEET_URL,{method:"POST",body:JSON.stringify(d),mode:"no-cors"}).catch(function(){})};
+
+/* Auth functions */
+var startApp=function(nm){sN(nm);sNs(true);sPh("app");send({name:nm,event:"started",source:"Healthcare 101"})};
+
+var trySignIn=function(){
+if(!ue.trim()||!pw.trim()){sAE("Enter your email and password.");return}
+var em=ue.trim().toLowerCase();sAE("");
+if(ADMINS.indexOf(em)>=0&&pw==="desta"){startApp("Biruh Mezgebu");return}
+fetch(SHEET_URL+"?type=invites").then(function(r){return r.json()}).then(function(d){
+var inv=d.invites||cfg.invites||[];var m=null;
+inv.forEach(function(i){if(i.Email&&i.Email.toLowerCase()===em&&i.Password===pw)m=i});
+if(m){startApp(m.Name||em)}else{sAE("Invalid credentials.")}
+}).catch(function(){sAE("Connection error.")})};
+
+var handleGoogleSignIn=function(resp){if(!resp||!resp.credential)return;sGLoading(true);
+try{var payload=JSON.parse(atob(resp.credential.split(".")[1]));var gEmail=(payload.email||"").toLowerCase();var gName=payload.name||"";
+if(ADMINS.indexOf(gEmail)>=0){sGLoading(false);startApp("Biruh Mezgebu");return}
+fetch(SHEET_URL+"?type=invites").then(function(r){return r.json()}).then(function(d){
+var inv=d.invites||[];var match=inv.find(function(i){return i.Email&&i.Email.toLowerCase()===gEmail});
+if(match){sGLoading(false);startApp(match.Name||gName)}
+else{post({event:"access_request",email:gEmail,name:gName,details:"Platform: Healthcare 101. Google-verified. Auto-submitted."});sRName(gName);sREmail(gEmail);sGVerified(true);sAuthTab("signup");sROk("Access request submitted. You will receive an email when your account is activated.");sAE("");sGLoading(false)}
+}).catch(function(){sAE("Connection error.");sGLoading(false)})}catch(e){sAE("Google sign-in failed.");sGLoading(false)}};
+
+var initGoogle=function(){try{if(window.google&&window.google.accounts){window.google.accounts.id.initialize({client_id:"385431439369-ak4rqmas3uvfoal2rb5d5id9kn6006d4.apps.googleusercontent.com",callback:handleGoogleSignIn,auto_select:false});var el1=document.getElementById("hc101-google-btn");if(el1)window.google.accounts.id.renderButton(el1,{theme:"outline",size:"large",width:"320",text:"signin_with",shape:"pill",logo_alignment:"center"});var el2=document.getElementById("hc101-google-signup-btn");if(el2)window.google.accounts.id.renderButton(el2,{theme:"outline",size:"large",width:"320",text:"signup_with",shape:"pill",logo_alignment:"center"})}}catch(e){}};
+
+var requestAccess=function(){if(!rName.trim()||!rEmail.trim()){sAE("Name and email are required.");return}sAE("");post({event:"access_request",email:rEmail.trim(),name:rName.trim(),details:"Platform: Healthcare 101. Org: "+(rOrg||"N/A")+". Message: "+(rMsg||"None")});sROk("Access request submitted. You will receive an email when your account is activated.");sRName("");sREmail("");sROrg("");sRMsg("");sGVerified(false)};
+
+React.useEffect(function(){if(ph==="auth")setTimeout(initGoogle,600)},[ph,authTab]);
+
+React.useEffect(function(){
+fetch(SHEET_URL).then(function(r){return r.json()}).then(function(d){sCfg({blocked:d.blocked||[],invites:d.invites||[],settings:d.settings||{}})}).catch(function(){});
+},[]);
+
+var allDone=CHAPTERS.every(function(ch){return completed[ch.id]});
+React.useEffect(function(){if(allDone&&!refMode)sRef(true)},[allDone,refMode]);
+
+React.useEffect(function(){
+if(allDone&&name&&emDone&&!sent){
+var ts=0,tq=0,tw=0,details="";
+CHAPTERS.forEach(function(ch){if(completed[ch.id]){ts+=completed[ch.id].s;tq+=completed[ch.id].t;tw+=(completed[ch.id].w||0);details+=ch.title+": "+completed[ch.id].s+"/"+completed[ch.id].t+" ("+completed[ch.id].att+" attempts, "+(completed[ch.id].w||0)+" wrong, "+completed[ch.id].time+"s)\n"}});
+send({name:name,event:"completed",source:"Healthcare 101",score:ts,total:tq,wrong:tw,percentage:Math.round(ts/tq*100),details:details,email:email});
+sSent(true);
+}
+},[allDone,name,sent,emDone]);
+
+React.useEffect(function(){
+if(intro&&scene<5){var t=setTimeout(function(){sSc(scene+1)},1400);return function(){clearTimeout(t)}}
+},[intro,scene]);
+
+var finishIntro=function(){sFad(true);setTimeout(function(){sIntr(false);sFad(false)},700)};
+var handleComplete=function(chId,s,t,w,att,timeSec){
+sC(O(completed,chId,{s:s,t:t,w:w,att:att,time:timeSec}));
+send({name:name,event:"chapter_complete",source:"Healthcare 101",chapter:"Ch "+chId+": "+CHAPTERS[chId-1].title,score:s,total:t,wrong:w,attempts:att,timeSec:timeSec,percentage:Math.round(s/t*100)});
+sV("home");window.scrollTo(0,0);
+};
+var canAccess=function(chId){if(refMode)return true;if(chId===1)return true;return !!completed[chId-1]};
+var goTo=function(chId){sVi(O(visited,chId,true));sV(chId);window.scrollTo(0,0)};
+
+var slides=[
+{img:"slide1.png",text:"From Addis Ababa..."},
+{img:"slide5.png",text:"...to learning the system..."},
+{img:"slide2.png",text:"...through the training..."},
+{img:"slide4.png",text:"...to real careers..."},
+{img:"slide6.png",text:"...one team, powering US healthcare."},
+];
+var totalSlides=slides.length;
+
+/* AUTH SCREEN */
+if(ph==="auth")return(
+<div style={{minHeight:"100vh",background:"linear-gradient(135deg,#F8F6F1,#EDE8E0)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+<div style={{width:400,background:"#fff",borderRadius:16,padding:36,boxShadow:"0 20px 60px rgba(0,0,0,.08)"}}>
+<div style={{textAlign:"center",marginBottom:20}}>
+<div style={{display:"flex",alignItems:"baseline",justifyContent:"center",gap:4}}><span style={{fontFamily:"Georgia,serif",letterSpacing:2,fontSize:20,color:"#2D2D2D"}}>DESTA</span><span style={{fontFamily:"Georgia,serif",letterSpacing:2,fontSize:20,color:"#8B7355"}}>WORKS</span></div>
+<div style={{fontSize:11,color:"#888",letterSpacing:2,marginTop:4}}>U N I V E R S I T Y</div>
+<div style={{fontSize:14,fontWeight:700,color:"#1E4A8A",marginTop:8}}>Healthcare 101</div>
+</div>
+<div style={{display:"flex",marginBottom:20,background:"#f5f5f5",borderRadius:8,padding:3}}>
+<div onClick={function(){sAuthTab("signin");sAE("");sROk("")}} style={{flex:1,textAlign:"center",padding:"8px 0",borderRadius:6,fontSize:13,fontWeight:600,cursor:"pointer",background:authTab==="signin"?"#fff":"transparent",color:authTab==="signin"?"#2D2D2D":"#888",boxShadow:authTab==="signin"?"0 1px 3px rgba(0,0,0,.1)":"none"}}>Sign In</div>
+<div onClick={function(){sAuthTab("signup");sAE("");sROk("")}} style={{flex:1,textAlign:"center",padding:"8px 0",borderRadius:6,fontSize:13,fontWeight:600,cursor:"pointer",background:authTab==="signup"?"#fff":"transparent",color:authTab==="signup"?"#2D2D2D":"#888",boxShadow:authTab==="signup"?"0 1px 3px rgba(0,0,0,.1)":"none"}}>Request Access</div>
+</div>
+{authTab==="signin"&&<div>
+<div style={{marginBottom:12}}><div style={{fontSize:11,color:"#888",marginBottom:4}}>EMAIL</div>
+<input value={ue} onChange={function(e){sUE(e.target.value)}} onKeyDown={function(e){if(e.key==="Enter")trySignIn()}} placeholder="your@email.com" style={{width:"100%",padding:"10px 14px",border:"1px solid #E0E0E0",borderRadius:6,fontSize:13}}/></div>
+<div style={{marginBottom:16}}><div style={{fontSize:11,color:"#888",marginBottom:4}}>PASSWORD</div>
+<input type="password" value={pw} onChange={function(e){sPW(e.target.value)}} onKeyDown={function(e){if(e.key==="Enter")trySignIn()}} placeholder="Enter password" style={{width:"100%",padding:"10px 14px",border:"1px solid #E0E0E0",borderRadius:6,fontSize:13}}/></div>
+{ae&&<div style={{color:"#E53935",fontSize:12,marginBottom:10}}>{ae}</div>}
+<button onClick={trySignIn} style={{width:"100%",padding:13,background:"#1E4A8A",color:"#fff",fontSize:15,fontWeight:600,borderRadius:8,border:"none",cursor:"pointer"}}>Sign In</button>
+<div style={{display:"flex",alignItems:"center",gap:12,margin:"16px 0"}}><div style={{flex:1,height:1,background:"#E0E0E0"}}/><span style={{fontSize:11,color:"#aaa"}}>or</span><div style={{flex:1,height:1,background:"#E0E0E0"}}/></div>
+<div id="hc101-google-btn" style={{display:"flex",justifyContent:"center"}}></div>
+{gLoading&&<div style={{textAlign:"center",marginTop:10,fontSize:12,color:"#888"}}>Signing in...</div>}
+</div>}
+{authTab==="signup"&&<div>
+<div style={{fontSize:12,color:"#888",marginBottom:14,lineHeight:1.6}}>Request access to Healthcare 101. An administrator will review and provision your account.</div>
+{gVerified&&<div style={{display:"flex",alignItems:"center",gap:10,background:"#E8F5E9",border:"1px solid #A5D6A7",borderRadius:10,padding:"10px 14px",marginBottom:14}}>
+<div style={{width:32,height:32,borderRadius:"50%",background:"#C8E6C9",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,fontWeight:700,color:"#2E7D32"}}>{(rName||"?")[0]}</div>
+<div style={{flex:1}}><div style={{fontSize:13,fontWeight:600}}>{rName}</div><div style={{fontSize:11,color:"#888"}}>{rEmail}</div></div>
+<span style={{fontSize:11,color:"#2E7D32",fontWeight:600}}>&#10003; Verified</span></div>}
+{!gVerified&&<div style={{marginBottom:14}}>
+<div id="hc101-google-signup-btn" style={{display:"flex",justifyContent:"center",marginBottom:10}}></div>
+<div style={{display:"flex",alignItems:"center",gap:10}}><div style={{flex:1,height:1,background:"#E0E0E0"}}/><span style={{fontSize:11,color:"#bbb"}}>or fill manually</span><div style={{flex:1,height:1,background:"#E0E0E0"}}/></div>
+</div>}
+<div style={{marginBottom:10}}><div style={{fontSize:11,color:"#888",marginBottom:3}}>FULL NAME *</div><input value={rName} onChange={function(e){sRName(e.target.value)}} placeholder="Your full name" style={{width:"100%",padding:"10px 14px",border:"1px solid #E0E0E0",borderRadius:6,fontSize:13,opacity:gVerified?.6:1}}/></div>
+<div style={{marginBottom:10}}><div style={{fontSize:11,color:"#888",marginBottom:3}}>EMAIL *</div><input type="email" value={rEmail} onChange={function(e){sREmail(e.target.value)}} placeholder="your@email.com" style={{width:"100%",padding:"10px 14px",border:"1px solid #E0E0E0",borderRadius:6,fontSize:13,opacity:gVerified?.6:1}}/></div>
+<div style={{marginBottom:14}}><div style={{fontSize:11,color:"#888",marginBottom:3}}>MESSAGE</div><textarea value={rMsg} onChange={function(e){sRMsg(e.target.value)}} placeholder="Tell us what you need access to..." rows={2} style={{width:"100%",padding:"10px 14px",border:"1px solid #E0E0E0",borderRadius:6,fontSize:13,resize:"vertical"}}/></div>
+{ae&&<div style={{color:"#E53935",fontSize:12,marginBottom:10}}>{ae}</div>}
+{rOk&&<div style={{color:"#2E7D32",fontSize:12,marginBottom:10,background:"#E8F5E9",padding:"10px 14px",borderRadius:6}}>{rOk}</div>}
+{!rOk&&<button onClick={requestAccess} style={{width:"100%",padding:13,background:"#1E4A8A",color:"#fff",fontSize:15,fontWeight:600,borderRadius:8,border:"none",cursor:"pointer"}}>Submit Request</button>}
+</div>}
+<div style={{textAlign:"center",marginTop:16}}><a href="https://biruhmezgebu1.github.io/desta-platform/" style={{fontSize:11,color:"#aaa",textDecoration:"none",letterSpacing:1}}>← All Platforms</a></div>
+</div></div>);
+
+return(
+<div>
+
+{intro&&(
+<div style={{position:"fixed",top:0,left:0,width:"100%",height:"100%",background:"#0a0a1a",zIndex:9999,opacity:fading?0:1,transition:"opacity .7s ease"}}>
+{slides.map(function(sl,i){return(
+<div key={i} style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",opacity:scene===i?1:0,transition:"opacity .8s ease",backgroundImage:"url("+sl.img+")",backgroundSize:"cover",backgroundPosition:"center",backgroundRepeat:"no-repeat",backgroundColor:"#0a0a1a"}}/>
+)})}
+<div style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",background:"linear-gradient(to bottom, rgba(10,10,26,.4) 0%, rgba(10,10,26,.7) 100%)"}}>
+<div style={{position:"absolute",bottom:"12%",left:0,width:"100%",textAlign:"center",padding:"0 30px"}}>
+<div key={scene} style={{animation:"fadeUp .6s ease both"}}>
+<div style={{fontFamily:"Georgia,serif",fontSize:scene===totalSlides-1?20:28,color:"#F8F6F1",letterSpacing:scene===totalSlides-1?.5:1,lineHeight:1.4,textShadow:"0 2px 20px rgba(0,0,0,.5)"}}>
+{scene<totalSlides?slides[scene].text:""}
+</div></div>
+{scene>=totalSlides&&(
+<button onClick={finishIntro} style={{marginTop:24,padding:"14px 44px",background:"#8B7355",color:"#F8F6F1",border:"none",borderRadius:8,fontSize:16,fontFamily:"Georgia,serif",letterSpacing:1,cursor:"pointer",animation:"fadeUp .6s ease .2s both",opacity:0,boxShadow:"0 4px 20px rgba(139,115,85,.4)"}}>Begin Learning</button>
+)}
+<div style={{display:"flex",justifyContent:"center",gap:8,marginTop:20}}>
+{slides.map(function(_,i){return <div key={i} style={{width:scene===i?28:8,height:6,borderRadius:3,background:scene>=i?"#8B7355":"rgba(248,246,241,.15)",transition:"all .4s ease"}}/>})}</div>
+<div style={{marginTop:16,fontFamily:"Georgia,serif",fontSize:12,letterSpacing:4,color:"rgba(248,246,241,.35)"}}>DESTA WORKS</div>
+</div></div>
+<button onClick={finishIntro} style={{position:"absolute",top:24,right:24,background:"transparent",border:"1px solid rgba(248,246,241,.2)",color:"rgba(248,246,241,.5)",padding:"6px 18px",borderRadius:20,fontSize:12,cursor:"pointer",zIndex:1}}>Skip →</button>
+</div>
+)}
+
+{!intro&&(
+<div>
+{CHAPTERS.map(function(ch){
+if(!visited[ch.id])return null;
+return <div key={ch.id} style={{display:view===ch.id?"block":"none",maxWidth:800,margin:"0 auto",padding:"20px 24px"}}>
+<Header onHome={function(){sV("home");window.scrollTo(0,0)}} onBack={function(){sV("home");window.scrollTo(0,0)}} showBack={true}/>
+<ChapterView chapter={ch} userName={name} send={send} onComplete={function(s,t,w,att,timeSec){handleComplete(ch.id,s,t,w,att,timeSec)}}/>
+<Foot/>
+</div>
+})}
+
+<div style={{display:view==="home"?"block":"none",maxWidth:800,margin:"0 auto",padding:"20px 24px"}}>
+<Header onHome={function(){sV("home")}}/>
+<div style={{background:"linear-gradient(135deg, #1E4A8A 0%, #0f3460 100%)",borderRadius:12,padding:36,marginBottom:32,color:C.white,position:"relative",overflow:"hidden"}}>
+<div style={{position:"absolute",top:0,right:0,width:200,height:200,background:"radial-gradient(circle, rgba(139,115,85,.15) 0%, transparent 70%)",borderRadius:"50%"}}/>
+<div style={{fontSize:12,letterSpacing:2,opacity:.6,marginBottom:8}}>DESTA WORKS — DESTA UNIVERSITY</div>
+<div style={{fontSize:30,fontWeight:700,fontFamily:"Georgia,serif",marginBottom:8}}>Healthcare 101</div>
+<div style={{fontSize:15,opacity:.85,marginBottom:4}}>Interactive Learning for Associate Recruiters</div>
+<div style={{fontSize:13,opacity:.6,marginBottom:16}}>Estimated time: ~45 minutes. Designed to move quickly.</div>
+<div style={{background:"rgba(255,255,255,.08)",borderRadius:8,padding:"14px 18px",fontSize:13,lineHeight:1.8,opacity:.8,marginBottom:16}}>
+<strong style={{color:"#8B7355"}}>How it works:</strong><br/>
+→ Chapters unlock one at a time. Complete each to advance.<br/>
+→ Read the content, then click "Test Your Understanding" to answer exercises.<br/>
+→ Score 70% or higher to unlock the next chapter. Below 70% = re-read and retry.<br/>
+→ Your answers are saved if you go back to the dashboard.<br/>
+→ After all 13 chapters: Reference Mode unlocks — browse everything freely.<br/>
+→ Progress dots at the top: <span style={{color:"#4CAF50"}}>green</span> = done, <span style={{color:"#8B7355"}}>bronze</span> = available, <span style={{opacity:.5}}>gray</span> = locked.
+</div>
+{ns&&<div style={{marginTop:12,fontSize:14,opacity:.85}}>Welcome, {name}. {Object.keys(completed).length}/13 chapters complete.</div>}
+{refMode&&<div style={{marginTop:12,padding:"8px 16px",background:"rgba(139,115,85,.3)",borderRadius:6,fontSize:13}}>Reference Mode — all chapters unlocked for review.</div>}
+</div>
+
+<div>
+<div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:24}}>
+{CHAPTERS.map(function(ch){
+var done=!!completed[ch.id];var accessible=canAccess(ch.id);
+return <div key={ch.id} onClick={function(){if(accessible)goTo(ch.id)}} className="ch-dot"
+style={{background:done?C.green:accessible?C.white:"#eee",color:done?C.white:accessible?C.charcoal:"#ccc",border:"2px solid "+(done?C.green:accessible?C.bronze:"#ddd"),cursor:accessible?"pointer":"default",opacity:accessible?1:.5}}>
+{ch.id}</div>
+})}
+</div>
+
+{CHAPTERS.map(function(ch){
+var done=!!completed[ch.id];var accessible=canAccess(ch.id);var next=!done&&accessible;
+return <div key={ch.id} onClick={function(){if(accessible)goTo(ch.id)}}
+style={{background:C.white,border:"1px solid "+(done?C.green:next?C.bronze:C.grayLt),borderLeft:"4px solid "+(done?C.green:next?C.bronze:accessible?C.grayLt:"#eee"),borderRadius:8,padding:"16px 20px",marginBottom:8,cursor:accessible?"pointer":"default",opacity:accessible?1:.5,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+<div style={{display:"flex",alignItems:"center",gap:12}}>
+<div style={{width:28,height:28,borderRadius:"50%",background:done?C.green:next?C.bronze:"#eee",color:done||next?C.white:C.gray,display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:700}}>{done?"✓":ch.id}</div>
+<div>
+<div style={{fontWeight:600,fontSize:15,color:accessible?C.charcoal:"#aaa"}}>{ch.title}</div>
+{done?<div style={{fontSize:12,color:C.green}}>{completed[ch.id].s}/{completed[ch.id].t} correct</div>
+:<div style={{fontSize:12,color:accessible?C.gray:"#ccc"}}>{ch.time}</div>}
+</div></div>
+<div>{next&&<span style={{fontSize:12,color:C.bronze,fontWeight:600}}>Start →</span>}{done&&refMode&&<span style={{fontSize:12,color:C.gray}}>Review</span>}</div>
+</div>
+})}
+
+{allDone&&(
+<div style={{background:C.ivory,border:"2px solid "+C.bronze,borderRadius:8,padding:24,marginTop:24,textAlign:"center"}}>
+<div style={{fontFamily:"Georgia,serif",fontSize:22,marginBottom:8}}>Healthcare 101 Complete</div>
+<div style={{fontSize:14,color:C.gray,marginBottom:12}}>{name+" — "}{Object.values(completed).reduce(function(s,v){return s+v.s},0)}/{Object.values(completed).reduce(function(s,v){return s+v.t},0)} total correct. Reference Mode unlocked.</div>
+{!emDone&&<div style={{marginBottom:16}}>
+<div style={{fontSize:14,fontWeight:600,marginBottom:8,color:C.charcoal}}>Enter your email to receive your certificate:</div>
+<div style={{display:"flex",gap:8,justifyContent:"center",maxWidth:400,margin:"0 auto"}}>
+<input placeholder="your@email.com" value={email} onChange={function(e){sEm(e.target.value)}} onKeyDown={function(e){if(e.key==="Enter"&&email.indexOf("@")>0)sEmDone(true)}} style={{flex:1,padding:"10px 14px",borderRadius:6,border:"1px solid #E0E0E0",fontSize:14}}/>
+<Btn variant="bronze" onClick={function(){if(email.indexOf("@")>0)sEmDone(true)}} style={{opacity:email.indexOf("@")>0?1:.4}}>Submit</Btn>
+</div></div>}
+{sent&&<div style={{fontSize:13,color:C.green,marginBottom:12}}>✓ Results and email submitted.</div>}
+{emDone&&<Btn variant="bronze" onClick={function(){
+var d={name:name,date:new Date().toISOString().split('T')[0],email:email,chapters:{}};
+CHAPTERS.forEach(function(ch){if(completed[ch.id])d.chapters["ch"+ch.id]={title:ch.title,score:completed[ch.id].s,total:completed[ch.id].t}});
+var b=new Blob([JSON.stringify(d,null,2)],{type:"application/json"});
+var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="healthcare101-"+name.replace(/\s+/g,"-").toLowerCase()+".json";a.click();
+}}>Download Results</Btn>}
+</div>
+)}
+</div>
+
+<Foot/>
+</div>
+</div>
+)}
+</div>);
+}
+
+ReactDOM.render(React.createElement(App),document.getElementById("root"));
+</script>
+</body>
+</html>
